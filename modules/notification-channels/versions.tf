@@ -10,9 +10,5 @@ terraform {
     #  source  = "hashicorp/google-beta"
     #  version = ">= 4.59.0"
     #}
-    pagerduty = {
-      source  = "pagerduty/pagerduty"
-      version = "~> 3.13"
-    }
   }
 }

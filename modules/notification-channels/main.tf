@@ -1,16 +1,6 @@
 
 
 locals {
-  # Support PagerDuty integration ID lookups
-  channel_pagerduty_refs = compact(distinct(flatten(
-    [
-      for channel in var.notification_channels : [
-        for label, value in(channel.sensitive_labels == null ? {} : channel.sensitive_labels) : [
-          value
-        ] if(value != null) && (label == "service_key") && (try(startswith(value, "pagerduty:"), false) == true)
-      ]
-    ]
-  )))
   # Support secrets in labels
   channel_label_secret_refs = compact(distinct(flatten(
     [
@@ -34,13 +24,6 @@ locals {
   channel_secret_refs = concat(local.channel_label_secret_refs, local.channel_slabel_secret_refs)
 }
 
-##https://registry.terraform.io/providers/PagerDuty/pagerduty/latest/docs/data-sources/service_integration
-data "pagerduty_service_integration" "notification_channels" {
-  for_each = toset(local.channel_pagerduty_refs)
-  # pagerduty:service_name:integration_summary
-  service_name        = split(":", each.key)[1]
-  integration_summary = split(":", each.key)[2]
-}
 #### .integration_key
 
 ### https://handbook.sourcegraph.com/departments/engineering/teams/devops/gcp-slack-notification-terraform/
@@ -89,14 +72,11 @@ resource "google_monitoring_notification_channel" "self" {
         : null
       )
       service_key = (try(each.value.sensitive_labels.service_key, null) != null ?
-        # If pagerduty ref exists
-        (lookup(data.pagerduty_service_integration.notification_channels, each.value.sensitive_labels.service_key, null) != null ?
-          data.pagerduty_service_integration.notification_channels[each.value.sensitive_labels.service_key].integration_key :
-          # If secret exists
-          (lookup(data.google_secret_manager_secret_version_access.notification_channels, each.value.sensitive_labels.service_key, null) != null ?
-            data.google_secret_manager_secret_version_access.notification_channels[each.value.sensitive_labels.service_key].secret_data
-            # else use raw value
-        : each.value.sensitive_labels.service_key))
+        # If secret exists
+        (lookup(data.google_secret_manager_secret_version_access.notification_channels, each.value.sensitive_labels.service_key, null) != null ?
+          data.google_secret_manager_secret_version_access.notification_channels[each.value.sensitive_labels.service_key].secret_data
+          # else use raw value
+        : each.value.sensitive_labels.service_key)
         : null
       )
 
@@ -109,11 +89,6 @@ resource "google_monitoring_notification_channel" "self" {
       #  # else use raw value
       #  : null)
       #service_key = ((try(each.value.sensitive_labels.auth_token, null) == null) && try(each.value.sensitive_labels.password, null) == null
-      #  # if pagerduty ref exists
-      #  # else if secret exists
-      #  ? "key"
-      #  # else use raw value
-      #  : null )
     }
   }
 }

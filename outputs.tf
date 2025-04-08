@@ -71,18 +71,9 @@ output "metric_descriptor_monitored_resource_types" {
 }
 
 # Notification Channels
-output "notification_channel_pagerduty_refs" {
-  description = "List of pagerduty service key references"
-  value       = module.notification_channels[*].channel_pagerduty_refs
-}
 output "notification_channel_secret_refs" {
   description = "List of Google secret manager secret references"
   value       = module.notification_channels[*].channel_secret_refs
-}
-output "notification_channel_pagerduty_integrations" {
-  description = "Pagerduty integrations"
-  value       = module.notification_channels[*].pagerduty_integrations
-  sensitive   = true
 }
 #output "secrets" {
 #  description = "Secrets"
