@@ -55,7 +55,8 @@ variable "uptime_checks" {
     tcp_check = optional(object({
       port = string
     }))
-    timeout = string # validate
+    timeout            = string # validate
+    log_check_failures = optional(bool)
   }))
 
   # TODO: make these optional to match if monitored_resource is defined

@@ -10,13 +10,13 @@ project, folder, or organization.
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.4.5 |
-| <a name="requirement_google"></a> [google](#requirement\_google) | >= 4.62 |
+| <a name="requirement_google"></a> [google](#requirement\_google) | ~> 6.9 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | 4.69.1 |
+| <a name="provider_google"></a> [google](#provider\_google) | 6.50.0 |
 
 ## Modules
 
@@ -36,7 +36,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_audit_configs"></a> [audit\_configs](#input\_audit\_configs) | List of data audit configuration objects for IAM policy. | <pre>list(object({<br>    service = string<br>    audit_log_configs = list(object({<br>      log_type         = string<br>      exempted_members = optional(list(string))<br>    }))<br>  }))</pre> | `[]` | no |
+| <a name="input_audit_configs"></a> [audit\_configs](#input\_audit\_configs) | List of data audit configuration objects for IAM policy. | <pre>list(object({<br/>    service = string<br/>    audit_log_configs = list(object({<br/>      log_type         = string<br/>      exempted_members = optional(list(string))<br/>    }))<br/>  }))</pre> | `[]` | no |
 | <a name="input_target_id"></a> [target\_id](#input\_target\_id) | The id of the resource to manage data access audit logs for. | `string` | n/a | yes |
 | <a name="input_target_type"></a> [target\_type](#input\_target\_type) | The type of the resource to manage data access audit logs for (folder, organization, project). | `string` | `"project"` | no |
 

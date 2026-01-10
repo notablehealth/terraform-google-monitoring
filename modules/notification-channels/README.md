@@ -33,15 +33,15 @@ Secret can be looked up in any of the sensitive_label labels by using the format
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.4.5 |
-| <a name="requirement_google"></a> [google](#requirement\_google) | >= 4.62 |
+| <a name="requirement_google"></a> [google](#requirement\_google) | ~> 6.9 |
 | <a name="requirement_pagerduty"></a> [pagerduty](#requirement\_pagerduty) | ~> 3.13 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | 4.66.0 |
-| <a name="provider_pagerduty"></a> [pagerduty](#provider\_pagerduty) | 2.14.5 |
+| <a name="provider_google"></a> [google](#provider\_google) | 6.50.0 |
+| <a name="provider_pagerduty"></a> [pagerduty](#provider\_pagerduty) | 3.30.8 |
 
 ## Modules
 
@@ -60,7 +60,7 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_gcp_project"></a> [gcp\_project](#input\_gcp\_project) | GCP project to put monitoring in | `string` | n/a | yes |
-| <a name="input_notification_channels"></a> [notification\_channels](#input\_notification\_channels) | Notification channel configuration objects | <pre>list(object({<br>    description  = string<br>    display_name = string<br>    enabled      = bool<br>    labels       = optional(map(string))<br>    sensitive_labels = optional(object({<br>      auth_token  = optional(string)<br>      password    = optional(string)<br>      service_key = optional(string)<br>    }))<br>    user_labels = optional(map(string))<br>    type        = string<br>  }))</pre> | <pre>[<br>  {<br>    "description": "",<br>    "display_name": "",<br>    "enabled": false,<br>    "type": "sms"<br>  }<br>]</pre> | no |
+| <a name="input_notification_channels"></a> [notification\_channels](#input\_notification\_channels) | Notification channel configuration objects | <pre>list(object({<br/>    description  = string<br/>    display_name = string<br/>    enabled      = bool<br/>    labels       = optional(map(string))<br/>    sensitive_labels = optional(object({<br/>      auth_token  = optional(string)<br/>      password    = optional(string)<br/>      service_key = optional(string)<br/>    }))<br/>    user_labels = optional(map(string))<br/>    type        = string<br/>  }))</pre> | <pre>[<br/>  {<br/>    "description": "",<br/>    "display_name": "",<br/>    "enabled": false,<br/>    "type": "sms"<br/>  }<br/>]</pre> | no |
 
 ## Outputs
 
