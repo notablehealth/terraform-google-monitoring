@@ -1,13 +1,14 @@
 
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/monitoring_uptime_check_config
 resource "google_monitoring_uptime_check_config" "self" {
-  for_each         = { for check in var.uptime_checks : check.display_name => check }
-  checker_type     = each.value.checker_type
-  display_name     = each.value.display_name
-  period           = each.value.period
-  project          = var.gcp_project
-  selected_regions = each.value.selected_regions
-  timeout          = each.value.timeout
+  for_each           = { for check in var.uptime_checks : check.display_name => check }
+  checker_type       = each.value.checker_type
+  display_name       = each.value.display_name
+  period             = each.value.period
+  project            = var.gcp_project
+  selected_regions   = each.value.selected_regions
+  timeout            = each.value.timeout
+  log_check_failures = each.value.log_check_failures
   dynamic "content_matchers" {
     for_each = each.value.content_matchers != null ? [each.value.content_matchers] : []
     content {

@@ -19,13 +19,16 @@ resource "google_monitoring_alert_policy" "self" {
   dynamic "alert_strategy" {
     for_each = each.value.alert_strategy == null ? [] : [each.value.alert_strategy]
     content {
-      auto_close = alert_strategy.value["auto_close"]
+      auto_close           = alert_strategy.value.auto_close
+      notification_prompts = alert_strategy.value.notification_prompts
       dynamic "notification_rate_limit" {
         for_each = alert_strategy.value["notification_rate_limit"] == null ? [] : [alert_strategy.value["notification_rate_limit"]]
         content {
           period = notification_rate_limit.value["period"]
         }
       }
+      # To be implemented when needed.
+      # dynamic "notification_channel_strategy" {}
     }
   }
   dynamic "conditions" {

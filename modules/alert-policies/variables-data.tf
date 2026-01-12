@@ -11,7 +11,15 @@ variable "alert_policies" {
       notification_rate_limit = optional(object({
         period = optional(string)
       }))
-      auto_close = optional(string)
+      auto_close           = optional(string)
+      notification_prompts = optional(list(string))
+      # This is possibly what the notification_channel_strategy should look like,
+      # but the provider docs are a little ambiguous about types. We don't need
+      # it yet, in any case.
+      # notification_channel_strategy = optional(object({
+      #   notification_channel_names = optional(list(string))
+      #   renotify_interval = optional(number)
+      # }))
     }))
     combiner = string
     conditions = list(object({
