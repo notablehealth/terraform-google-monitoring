@@ -22,15 +22,16 @@ variable "uptime_checks" {
         password = string
         username = string
       }))
-      body           = optional(string)
-      content_type   = optional(string)
-      headers        = optional(map(string))
-      mark_headers   = optional(bool)
-      path           = optional(string)
-      port           = optional(string)
-      request_method = optional(string)
-      use_ssl        = optional(bool)
-      validate_ssl   = optional(bool)
+      body                = optional(string)
+      content_type        = optional(string)
+      custom_content_type = optional(string)
+      headers             = optional(map(string))
+      mark_headers        = optional(bool)
+      path                = optional(string)
+      port                = optional(string)
+      request_method      = optional(string)
+      use_ssl             = optional(bool)
+      validate_ssl        = optional(bool)
     }))
     monitored_resource = optional(object({ # validate
       labels = object({
@@ -103,6 +104,13 @@ variable "uptime_checks" {
       : true
     ])
     error_message = "Type uptime_url requires labels: host, project_id."
+  }
+  validation { # Ensure content type is provided when made configurable
+    condition = alltrue([
+      for check in var.uptime_checks :
+      (!(check.http_check.content_type == "USER_PROVIDED")) || (check.http_check.content_type == "USER_PROVIDED" && check.http_check.custom_content_type != null)
+    ])
+    error_message = "http_check.custom_content_type must be given if http_check.content_type is USER_PROVIDED"
   }
   default = [{
     display_name = ""

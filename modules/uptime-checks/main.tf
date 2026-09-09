@@ -26,15 +26,17 @@ resource "google_monitoring_uptime_check_config" "self" {
   dynamic "http_check" {
     for_each = each.value.http_check != null ? [each.value.http_check] : []
     content {
-      body           = http_check.value.body
-      content_type   = http_check.value.content_type
-      headers        = http_check.value.headers
-      mask_headers   = try(http_check.value.mask_headers, null) != null ? http_check.value.mask_headers : null
-      path           = http_check.value.path
-      port           = http_check.value.port
-      request_method = http_check.value.request_method
-      use_ssl        = http_check.value.use_ssl
-      validate_ssl   = http_check.value.validate_ssl
+      body         = http_check.value.body
+      content_type = http_check.value.content_type
+
+      custom_content_type = http_check.value.custom_content_type
+      headers             = http_check.value.headers
+      mask_headers        = try(http_check.value.mask_headers, null) != null ? http_check.value.mask_headers : null
+      path                = http_check.value.path
+      port                = http_check.value.port
+      request_method      = http_check.value.request_method
+      use_ssl             = http_check.value.use_ssl
+      validate_ssl        = http_check.value.validate_ssl
       dynamic "accepted_response_status_codes" {
         for_each = try(http_check.value.accepted_response_status_codes, null) != null ? http_check.value.accepted_response_status_codes : []
         content {
