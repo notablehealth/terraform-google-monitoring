@@ -129,7 +129,7 @@ resource "google_monitoring_alert_policy" "self" {
     #subject   = each.value.documentation["subject"]
   }
   enabled               = each.value.enabled
-  notification_channels = [for name in each.value.notification_channels : data.google_monitoring_notification_channel.self[name].name]
+  notification_channels = sort([for name in each.value.notification_channels : data.google_monitoring_notification_channel.self[name].name])
   severity              = each.value.severity
   user_labels           = each.value.user_labels
 }
